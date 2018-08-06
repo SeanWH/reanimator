@@ -5,156 +5,163 @@ namespace Revival.Common
 {
     public abstract class Config
     {
-        const String Key = @"SOFTWARE\Reanimator";
-        static readonly RegistryKey RootKey = Registry.CurrentUser.CreateSubKey(Key);
-        static readonly RegistryKey Configkey = RootKey.CreateSubKey("config");
-
-        private static T _GetValue<T>(string name, T defaultValue)
-        {
-            if (typeof(T) == typeof(Boolean))
-            {
-                Object ret;
-                if ((bool)(Object)defaultValue)
-                {
-                    ret = Configkey.GetValue(name, 1);
-                }
-                else
-                {
-                    ret = Configkey.GetValue(name, 0);
-                }
-
-                return (T)(Object)((int)ret != 0);
-            }
-
-            return (T)Configkey.GetValue(name, defaultValue);
-        }
-
-        private static void _SetValue(String name, Object value)
-        {
-            if (value is String)
-            {
-                Configkey.SetValue(name, value, RegistryValueKind.String);
-            }
-            else if (value is int || value is short)
-            {
-                Configkey.SetValue(name, value, RegistryValueKind.DWord);
-            }
-            else if (value is long)
-            {
-                Configkey.SetValue(name, value, RegistryValueKind.QWord);
-            }
-            else if (value.GetType() == typeof(String[]))
-            {
-                Configkey.SetValue(name, value, RegistryValueKind.MultiString);
-            }
-            else if (value is bool)
-            {
-                _SetValue(name, ((bool) value) ? 1 : 0);
-            }
-
-            Configkey.Flush();
-        }
+        private const string Key = @"SOFTWARE\Reanimator";
+        private static readonly RegistryKey _rootKey = Registry.CurrentUser.CreateSubKey(Key);
+        private static readonly RegistryKey _configkey = _rootKey.CreateSubKey("config");
 
         public static string HglDir
         {
-            get { return _GetValue("HglDir", @"C:\Program Files\Flagship Studios\Hellgate London"); }
-            set { _SetValue("HglDir", value); }
+            get => _GetValue("HglDir", @"C:\Program Files\Flagship Studios\Hellgate London");
+            set => _SetValue("HglDir", value);
         }
 
         public static string HglDataDir
         {
-            get { return _GetValue("HglDir", @"C:\Program Files\Flagship Studios\Hellgate London\data"); }
-            set { _SetValue("HglDataDir", value); }
+            get => _GetValue("HglDir", @"C:\Program Files\Flagship Studios\Hellgate London\data");
+            set => _SetValue("HglDataDir", value);
         }
 
         public static string SaveDir
         {
-            get { return _GetValue("SaveDir", String.Format(@"C:\Users\{0}\Documents\My Games\Hellgate\Save\Singleplayer", Environment.UserName)); }
-            set { _SetValue("SaveDir", value); }
+            get => _GetValue("SaveDir",
+                $@"C:\Users\{Environment.UserName}\Documents\My Games\Hellgate\Save\Singleplayer");
+            set => _SetValue("SaveDir", value);
         }
 
         public static string BackupDir
         {
-            get { return _GetValue("BackupDir", String.Format(@"C:\Users\{0}\Documents\My Games\Hellgate\Save\Singleplayer\Backup", Environment.UserName)); }
-            set { _SetValue("BackupDir", value); }
+            get => _GetValue("BackupDir",
+                $@"C:\Users\{Environment.UserName}\Documents\My Games\Hellgate\Save\Singleplayer\Backup");
+            set => _SetValue("BackupDir", value);
         }
 
         public static string ScriptDir
         {
-            get { return _GetValue("ScriptDir", @"C:\Program Files\Flagship Studios\Hellgate London\Reanimator\Scripts"); }
-            set { _SetValue("ScriptDir", value); }
+            get => _GetValue("ScriptDir", @"C:\Program Files\Flagship Studios\Hellgate London\Reanimator\Scripts");
+            set => _SetValue("ScriptDir", value);
         }
 
         public static string GameClientPath
         {
-            get { return _GetValue("GameClientPath", @"C:\Program Files\Flagship Studios\Hellgate London\SP_x32\hellgate_sp_dx9_x32.exe"); }
-            set { _SetValue("GameClientPath", value); }
+            get => _GetValue("GameClientPath",
+                @"C:\Program Files\Flagship Studios\Hellgate London\SP_x32\hellgate_sp_dx9_x32.exe");
+            set => _SetValue("GameClientPath", value);
         }
 
         public static int ClientHeight
         {
-            get { return _GetValue("ClientHeight", 500); }
-            set { _SetValue("ClientHeight", value); }
+            get => _GetValue("ClientHeight", 500);
+            set => _SetValue("ClientHeight", value);
         }
 
         public static int ClientWidth
         {
-            get { return _GetValue("ClientWidth", 700); }
-            set { _SetValue("ClientWidth", value); }
+            get => _GetValue("ClientWidth", 700);
+            set => _SetValue("ClientWidth", value);
         }
 
         public static string IntPtrCast
         {
-            get { return _GetValue("IntPtrCast", "hex"); }
-            set { _SetValue("IntPtrCast", value); }
+            get => _GetValue("IntPtrCast", "hex");
+            set => _SetValue("IntPtrCast", value);
         }
 
         public static bool GenerateRelations
         {
-            get { return _GetValue("GenerateRelations", true); }
-            set { _SetValue("GenerateRelations", value); }
+            get => _GetValue("GenerateRelations", true);
+            set => _SetValue("GenerateRelations", value);
         }
 
         public static bool LoadTCv4DataFiles
         {
-            get { return _GetValue("LoadTCv4DataFiles", false); }
-            set { _SetValue("LoadTCv4DataFiles", value); }
+            get => _GetValue("LoadTCv4DataFiles", false);
+            set => _SetValue("LoadTCv4DataFiles", value);
         }
 
-        public static String LastDirectory
+        public static string LastDirectory
         {
-            get { return _GetValue("LastDirectory", ""); }
-            set { _SetValue("LastDirectory", value); }
+            get => _GetValue("LastDirectory", "");
+            set => _SetValue("LastDirectory", value);
         }
 
-        public static String TxtEditor
+        public static string TxtEditor
         {
-            get { return _GetValue("TxtEditor", "notepad.exe"); }
-            set { _SetValue("TxtEditor", value); }
+            get => _GetValue("TxtEditor", "notepad.exe");
+            set => _SetValue("TxtEditor", value);
         }
 
-        public static String XmlEditor
+        public static string XmlEditor
         {
-            get { return _GetValue("XmlEditor", "notepad.exe"); }
-            set { _SetValue("XmlEditor", value); }
+            get => _GetValue("XmlEditor", "notepad.exe");
+            set => _SetValue("XmlEditor", value);
         }
 
-        public static String CsvEditor
+        public static string CsvEditor
         {
-            get { return _GetValue("CsvEditor", "notepad.exe"); }
-            set { _SetValue("CsvEditor", value); }
+            get => _GetValue("CsvEditor", "notepad.exe");
+            set => _SetValue("CsvEditor", value);
         }
 
-        public static String StringsLanguage
+        public static string StringsLanguage
         {
-            get { return _GetValue("StringsLanguage", "english"); }
-            set { _SetValue("StringsLanguage", value); }
+            get => _GetValue("StringsLanguage", "english");
+            set => _SetValue("StringsLanguage", value);
         }
 
         public static bool ShowFileExplorer
         {
-            get { return _GetValue("ShowFileExplorer", false); }
-            set { _SetValue("ShowFileExplorer", value); }
+            get => _GetValue("ShowFileExplorer", false);
+            set => _SetValue("ShowFileExplorer", value);
+        }
+
+        private static T _GetValue<T>(string name, T defaultValue)
+        {
+            if (typeof(T) != typeof(bool))
+            {
+                return (T) _configkey.GetValue(name, defaultValue);
+            }
+
+            object ret;
+            if ((bool) (object) defaultValue)
+            {
+                ret = _configkey.GetValue(name, 1);
+            }
+            else
+            {
+                ret = _configkey.GetValue(name, 0);
+            }
+
+            return (T) (object) ((int) ret != 0);
+        }
+
+        private static void _SetValue(string name, object value)
+        {
+            switch (value)
+            {
+                case string _:
+                    _configkey.SetValue(name, value, RegistryValueKind.String);
+                    break;
+                case int _:
+                case short _:
+                    _configkey.SetValue(name, value, RegistryValueKind.DWord);
+                    break;
+                case long _:
+                    _configkey.SetValue(name, value, RegistryValueKind.QWord);
+                    break;
+                default:
+                    if (value.GetType() == typeof(string[]))
+                    {
+                        _configkey.SetValue(name, value, RegistryValueKind.MultiString);
+                    }
+                    else if (value is bool b)
+                    {
+                        _SetValue(name, b ? 1 : 0);
+                    }
+
+                    break;
+            }
+
+            _configkey.Flush();
         }
     }
 }

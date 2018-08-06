@@ -1,45 +1,40 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 
 namespace Revival.Common
 {
     public static class TableTools
     {
-        public static DataTable SelectDistinct(DataTable SourceTable, params string[] FieldNames)
-        {
-            object[] lastValues;
-            DataTable newTable;
-            DataRow[] orderedRows;
+        //public static DataTable SelectDistinct(DataTable sourceTable, params string[] fieldNames)
+        //{
+        //    if (fieldNames == null || fieldNames.Length == 0)
+        //        throw new ArgumentNullException(nameof(fieldNames));
 
-            if (FieldNames == null || FieldNames.Length == 0)
-                throw new ArgumentNullException("FieldNames");
+        //    var lastValues = new object[fieldNames.Length];
+        //    var newTable = new DataTable();
 
-            lastValues = new object[FieldNames.Length];
-            newTable = new DataTable();
+        //    foreach (string fieldName in fieldNames)
+        //        newTable.Columns.Add(fieldName, sourceTable.Columns[fieldName].DataType);
 
-            foreach (string fieldName in FieldNames)
-                newTable.Columns.Add(fieldName, SourceTable.Columns[fieldName].DataType);
+        //    var orderedRows = sourceTable.Select("", string.Join(", ", fieldNames));
 
-            orderedRows = SourceTable.Select("", string.Join(", ", FieldNames));
+        //    foreach (DataRow row in orderedRows)
+        //    {
+        //        if ((int)row[fieldNames[0]] == -1) //lazy. function cant be reused
+        //        {
+        //            continue; // ignore values -1
+        //        }
 
-            foreach (DataRow row in orderedRows)
-            {
-                if ((int)row[FieldNames[0]] == -1) //lazy. function cant be reused
-                {
-                    continue; // ignore values -1
-                }
+        //        if (!FieldValuesAreEqual(lastValues, row, fieldNames))
+        //        {
+        //            DataRow newRow = CreateRowClone(row, newTable.NewRow(), fieldNames);
+        //            newTable.Rows.Add(newRow);
+        //            SetLastValues(lastValues, row, fieldNames);
+        //            newRow[0] = row[0];//modified to store index, not distinct value
+        //        }
+        //    }
 
-                if (!FieldValuesAreEqual(lastValues, row, FieldNames))
-                {
-                    DataRow newRow = CreateRowClone(row, newTable.NewRow(), FieldNames);
-                    newTable.Rows.Add(newRow);
-                    SetLastValues(lastValues, row, FieldNames);
-                    newRow[0] = row[0];//modified to store index, not distinct value
-                }
-            }
-
-            return newTable;
-        }
+        //    return newTable;
+        //}
 
         public static bool FieldValuesAreEqual(object[] lastValues, DataRow currentRow, string[] fieldNames)
         {
